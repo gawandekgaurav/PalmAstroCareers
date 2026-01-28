@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Discover your true career path through astrology. Astro Careers combines ancient wisdom with modern insights to guide you towards a fulfilling profession.">
+    <meta name="keywords"
+        content="career astrology, career guidance, birth chart analysis, career consultation, astrological career counseling">
+    <meta name="author" content="Astro Careers">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Astro Careers - Discover Your True Career Path Through Astrology">
+    <meta property="og:description"
+        content="Unlock your cosmic blueprint and find the profession you were born for with expert astrological career guidance.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://astrocareers.com">
+    <meta property="og:image" content="https://astrocareers.com/images/hero-bg.jpg">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Astro Careers - Discover Your True Career Path Through Astrology">
+    <meta name="twitter:description" content="Unlock your cosmic blueprint and find the profession you were born for.">
+
+    <title>Astro Careers - Discover Your True Career Path Through Astrology</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Astro Careers</a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#approach">Our Approach</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <a href="#consultation" class="cta-button">Get Career Guidance</a>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars" style="color: white;"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Discover Your True Career Path Through Astrology</h1>
+                <p>Unlock your cosmic blueprint and find the profession you were born for.</p>
+                <div class="hero-buttons">
+                    <a href="#consultation" class="cta-button">Get Your Career Report</a>
+                    <a href="#consultation" class="cta-button">Book a Consultation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">Who We Are</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Gaurav Careers combines ancient astrology with modern career insights to help you find a path
+                        that aligns with your potential. Our expert astrologers analyze your birth chart to guide you
+                        towards a fulfilling career.</p>
+                    <p>With years of experience in both astrology and career counseling, we provide personalized
+                        guidance that takes into account your unique cosmic signature. Whether you're just starting your
+                        career journey or looking to make a change, our insights can help you make informed decisions.
+                    </p>
+                </div>
+                <div class="about-image">
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Approach Section -->
+    <section id="approach">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="approach-steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3 class="step-title">Collect Birth Details</h3>
+                    <p class="step-description">Provide your date, time, and place of birth for accurate chart analysis.
+                    </p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="step-title">Analyze Your Chart</h3>
+                    <p class="step-description">Our experts study your birth chart to understand your cosmic influences.
+                    </p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <h3 class="step-title">Identify Suitable Career Paths</h3>
+                    <p class="step-description">Discover careers that align with your astrological strengths and
+                        potential.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="step-title">Deliver Report or Consultation</h3>
+                    <p class="step-description">Receive detailed guidance through comprehensive reports or personal
+                        consultations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="service-title">Personalized Career Report</h3>
+                    <p class="service-description">Comprehensive analysis of your birth chart with detailed career
+                        recommendations and timing insights.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 class="service-title">1:1 Career Astrology Consultation</h3>
+                    <p class="service-description">Personal consultation with expert astrologers to discuss your career
+                        path and answer specific questions.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="service-title">Timing for Job Change</h3>
+                    <p class="service-description">Astrological timing analysis to identify the best periods for career
+                        transitions and job changes.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3 class="service-title">Business vs Job Analysis</h3>
+                    <p class="service-description">Detailed comparison of your potential in business ownership versus
+                        traditional employment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">I was confused between multiple career options even after graduation.
+                        Astro Careers gave me a clear direction based on my birth chart.</p>
+                    <div class="testimonial-author">Aarti Mehra</div>
+                    <div class="testimonial-location">Pune, Maharashtra</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Their personalized report was spot on. It explained my strengths and
+                        even predicted a great time for my job change.</p>
+                    <div class="testimonial-author">Rohan Iyer</div>
+                    <div class="testimonial-location">Bengaluru, Karnataka</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">I never thought astrology could guide careers so accurately. The
+                        consultation gave me confidence to pursue interior designing.</p>
+                    <div class="testimonial-author">Sneha Raut</div>
+                    <div class="testimonial-location">Nagpur, Maharashtra</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">I had doubts about whether I should continue my 9–5 or start something
+                        of my own. Astro Careers helped me see that business is my calling.</p>
+                    <div class="testimonial-author">Harshit Bansal</div>
+                    <div class="testimonial-location">Delhi</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Consultation Form Section -->
+    <section id="consultation" class="consultation-form">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Book a Consultation</h2>
+            <div class="form-container">
+                <div class="form-card">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Rahul Sharma"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input"
+                                placeholder="e.g. rahul@example.com" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" name="dob" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tob">Time of Birth</label>
+                                <input type="time" id="tob" name="tob" class="form-input" required>
+                                <!-- <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="unknown-time">
+                                    <label for="unknown-time" class="checkbox-label">I don't know my time</label>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pob">Place of Birth</label>
+                            <input type="text" id="pob" name="pob" class="form-input" placeholder="City, State, Country"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service">Preferred Service</label>
+                            <div class="select-wrapper">
+                                <select id="service" name="service" class="form-input" required>
+                                    <option value="" disabled selected>Select a service...</option>
+                                    <option value="career-report">Personalized Career Report</option>
+                                    <option value="consultation">1:1 Career Astrology Consultation</option>
+                                    <option value="timing">Timing for Job Change</option>
+                                    <option value="business-analysis">Business vs Job Analysis</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message (Optional)</label>
+                            <textarea id="message" name="message" class="form-input"
+                                placeholder="Tell us about your career goals or any specific questions you have..."></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Get Your Guidance</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog">
+        <div class="container">
+            <h2 class="section-title">Latest Insights</h2>
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Top Career Indicators in Your Birth Chart</h3>
+                        <p class="blog-excerpt">Discover the key planetary positions and aspects that reveal your true
+                            career calling and professional potential.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-saturn"></i>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">How Saturn Shapes Your Work Life</h3>
+                        <p class="blog-excerpt">Understanding Saturn's influence on your career path, work ethic, and
+                            professional growth opportunities.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Best Careers Based on Your Moon Sign</h3>
+                        <p class="blog-excerpt">Explore how your Moon sign influences your emotional needs and ideal
+                            work environment for career satisfaction.</p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>support@astrocareers.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+91 98765 43210</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp: +91 98765 43210</span>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Astro Careers</h3>
+                    <p>Discover your true career path through the ancient wisdom of astrology combined with modern
+                        career insights.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li>Email: support@astrocareers.com</li>
+                        <li>Phone: +91 98765 43210</li>
+                        <li>WhatsApp: +91 98765 43210</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Astro Careers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
