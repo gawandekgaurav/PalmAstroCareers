@@ -26,6 +26,11 @@
 
     <title>Astro Careers - Discover Your True Career Path Through Astrology</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="assets/images/favicon.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,13 +42,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
     <!-- Header -->
     <header>
+        <a href="#" class="floating-logo">
+            <img src="assets/images/logo.png" alt="Astro Careers">
+        </a>
         <div class="container">
             <div class="header-content">
                 <a href="#" class="logo">Astro Careers</a>
@@ -273,6 +281,40 @@
                             </div>
                         </div>
 
+                        <div class="form-group-section" style="margin-bottom: 1.5rem;">
+                            <label class="section-label"
+                                style="display: block; margin-bottom: 1rem; font-weight: 600; color: #333; font-size: 1.1rem;">Upload
+                                Your Palm Images (Optional)</label>
+                            <div class="form-row upload-row">
+                                <!-- Left Hand -->
+                                <div class="upload-group">
+                                    <span class="upload-title">Left Hand</span>
+                                    <input type="file" id="left-palm" name="left-palm" class="hidden-input"
+                                        accept="image/*">
+                                    <label for="left-palm" class="upload-zone">
+                                        <div class="hand-visual left-hand-visual">
+                                            <i class="fas fa-hand-paper"></i>
+                                            <div class="scan-line"></div>
+                                        </div>
+                                        <span class="upload-status" id="left-palm-status">Click to Upload</span>
+                                    </label>
+                                </div>
+                                <!-- Right Hand -->
+                                <div class="upload-group">
+                                    <span class="upload-title">Right Hand</span>
+                                    <input type="file" id="right-palm" name="right-palm" class="hidden-input"
+                                        accept="image/*">
+                                    <label for="right-palm" class="upload-zone">
+                                        <div class="hand-visual right-hand-visual">
+                                            <i class="fas fa-hand-paper"></i>
+                                            <div class="scan-line"></div>
+                                        </div>
+                                        <span class="upload-status" id="right-palm-status">Click to Upload</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="message">Message (Optional)</label>
                             <textarea id="message" name="message" class="form-input"
@@ -397,8 +439,8 @@
             </div>
         </div>
     </footer>
-    <script src="config.js"></script>
-    <script src="script.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/script.js"></script>
 
 </body>
 
