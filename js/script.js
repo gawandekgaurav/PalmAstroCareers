@@ -105,6 +105,49 @@ if (unknownTimeCheckbox) {
     }
 });
 
+// Real-time Name Validation
+const nameInput = document.getElementById('name');
+
+// Helper to show/hide inline error
+function setInputError(input, message) {
+    const formGroup = input.parentElement;
+    let errorDisplay = formGroup.querySelector('.error-message');
+
+    if (message) {
+        input.classList.add('error');
+        if (!errorDisplay) {
+            errorDisplay = document.createElement('span');
+            errorDisplay.className = 'error-message';
+            formGroup.appendChild(errorDisplay);
+        }
+        errorDisplay.textContent = message;
+    } else {
+        input.classList.remove('error');
+        if (errorDisplay) {
+            errorDisplay.remove();
+        }
+    }
+}
+
+if (nameInput) {
+    nameInput.addEventListener('input', function () {
+        const value = this.value.trim();
+        if (value.length > 0 && value.length <= 2) {
+            setInputError(this, 'Name must be greater than 2 characters');
+        } else {
+            setInputError(this, null);
+        }
+    });
+
+    // Also validate on blur to handle empty case if needed
+    nameInput.addEventListener('blur', function () {
+        const value = this.value.trim();
+        if (value.length > 0 && value.length <= 2) {
+            setInputError(this, 'Name must be greater than 2 characters');
+        }
+    });
+}
+
 // Form submission
 const form = document.querySelector('form');
 form.addEventListener('submit', async function (e) {
@@ -112,7 +155,9 @@ form.addEventListener('submit', async function (e) {
 
     const nameValue = form.name.value.trim();
     if (nameValue.length <= 2) {
-        showModal('Validation Error', 'Name must be greater than 2 characters.', false);
+        setInputError(form.name, 'Name must be greater than 2 characters');
+        // Shake animation or focus
+        form.name.focus();
         return;
     }
 
