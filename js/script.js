@@ -132,8 +132,8 @@ function setInputError(input, message) {
 if (nameInput) {
     nameInput.addEventListener('input', function () {
         const value = this.value.trim();
-        if (value.length > 0 && value.length < 2) {
-            setInputError(this, 'Name must be at least 2 characters');
+        if (value.length > 0 && value.length <= 2) {
+            setInputError(this, 'Name must be greater than 2 characters');
         } else {
             setInputError(this, null);
         }
@@ -142,126 +142,127 @@ if (nameInput) {
     // Also validate on blur to handle empty case if needed
     nameInput.addEventListener('blur', function () {
         const value = this.value.trim();
-        if (value.length > 0 && value.length < 2) {
-            setInputError(this, 'Name must be at least 2 characters');
+        if (value.length > 0 && value.length <= 2) {
+            setInputError(this, 'Name must be greater than 2 characters');
+        }
+    });
+}
+
+
+// Real-time Email Validation
+const emailInput = document.getElementById('email');
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (emailInput) {
+    emailInput.addEventListener('input', function () {
+        const value = this.value.trim();
+        if (value.length > 0 && !emailRegex.test(value)) {
+            setInputError(this, 'Please enter a valid email address');
+        } else {
+            setInputError(this, null);
         }
     });
 
+    emailInput.addEventListener('blur', function () {
+        const value = this.value.trim();
+        if (value.length > 0 && !emailRegex.test(value)) {
+            setInputError(this, 'Please enter a valid email address');
+        }
+    });
+}
 
-    // Real-time Email Validation
-    const emailInput = document.getElementById('email');
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Form submission
+const form = document.querySelector('form');
+form.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-    if (emailInput) {
-        emailInput.addEventListener('input', function () {
-            const value = this.value.trim();
-            if (value.length > 0 && !emailRegex.test(value)) {
-                setInputError(this, 'Please enter a valid email address');
-            } else {
-                setInputError(this, null);
-            }
-        });
-
-        emailInput.addEventListener('blur', function () {
-            const value = this.value.trim();
-            if (value.length > 0 && !emailRegex.test(value)) {
-                setInputError(this, 'Please enter a valid email address');
-            }
-        });
+    const nameValue = form.name.value.trim();
+    if (nameValue.length <= 2) {
+        setInputError(form.name, 'Name must be greater than 2 characters');
+        form.name.focus();
+        return;
     }
 
-    // Form submission
-    const form = document.querySelector('form');
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
+    const emailValue = form.email.value.trim();
+    if (!emailRegex.test(emailValue)) {
+        setInputError(form.email, 'Please enter a valid email address');
+        form.email.focus();
+        return;
+    }
 
-        const nameValue = form.name.value.trim();
-        if (nameValue.length < 2) {
-            setInputError(form.name, 'Name must be at least 2 characters');
-            form.name.focus();
-            return;
-        }
+    const submitBtn = form.querySelector('.submit-btn');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.textContent = 'Submitting...';
+    submitBtn.disabled = true;
 
-        const emailValue = form.email.value.trim();
-        if (!emailRegex.test(emailValue)) {
-            setInputError(form.email, 'Please enter a valid email address');
-            form.email.focus();
-            return;
-        }
-
-        const submitBtn = form.querySelector('.submit-btn');
-        const originalBtnText = submitBtn.textContent;
-        submitBtn.textContent = 'Submitting...';
-        submitBtn.disabled = true;
-
-        const formData = {
-            name: form.name.value,
-            email: form.email.value,
-            dob: form.dob.value,
-            tob: form.tob.value,
-            pob: form.pob.value,
-            service: form.service.value,
-            message: form.message.value
-        };
-
-        try {
-            const { data, error } = await supabaseClient
-                .from('AstroCareersDatabase')
-                .insert([formData]);
-
-            if (error) throw error;
-
-            showModal('Success!', 'Thank you for your interest! We will contact you soon.', true);
-            form.reset();
-
-            // Reset file inputs visually
-            document.querySelectorAll('.upload-status').forEach(el => {
-                el.textContent = 'Click to Upload';
-                el.classList.remove('active');
-                el.parentElement.style.borderColor = '';
-                el.parentElement.style.backgroundColor = '';
-            });
-
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            showModal('Error', 'Something went wrong. Please try again later.\n' + error.message, false);
-        } finally {
-            submitBtn.textContent = originalBtnText;
-            submitBtn.disabled = false;
-        }
-    });
-
-    // Scroll animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+    const formData = {
+        name: form.name.value,
+        email: form.email.value,
+        dob: form.dob.value,
+        tob: form.tob.value,
+        pob: form.pob.value,
+        service: form.service.value,
+        message: form.message.value
     };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('loaded');
-            }
+    try {
+        const { data, error } = await supabaseClient
+            .from('AstroCareersDatabase')
+            .insert([formData]);
+
+        if (error) throw error;
+
+        showModal('Success!', 'Thank you for your interest! We will contact you soon.', true);
+        form.reset();
+
+        // Reset file inputs visually
+        document.querySelectorAll('.upload-status').forEach(el => {
+            el.textContent = 'Click to Upload';
+            el.classList.remove('active');
+            el.parentElement.style.borderColor = '';
+            el.parentElement.style.backgroundColor = '';
         });
-    }, observerOptions);
 
-    // Observe all sections for animation
-    document.querySelectorAll('section').forEach(section => {
-        section.classList.add('loading');
-        observer.observe(section);
-    });
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        showModal('Error', 'Something went wrong. Please try again later.\n' + error.message, false);
+    } finally {
+        submitBtn.textContent = originalBtnText;
+        submitBtn.disabled = false;
+    }
+});
 
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-        const header = document.querySelector('header');
-        if (window.scrollY > 100) {
-            header.style.background = 'rgba(255, 107, 53, 0.95)';
-        } else {
-            header.style.background = 'linear-gradient(135deg, #ff6b35, #f7931e)';
+// Scroll animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('loaded');
         }
     });
+}, observerOptions);
 
-    // Initialize animations on page load
-    window.addEventListener('load', () => {
-        document.body.classList.add('loaded');
-    });
+// Observe all sections for animation
+document.querySelectorAll('section').forEach(section => {
+    section.classList.add('loading');
+    observer.observe(section);
+});
+
+// Header scroll effect
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (window.scrollY > 100) {
+        header.style.background = 'rgba(255, 107, 53, 0.95)';
+    } else {
+        header.style.background = 'linear-gradient(135deg, #ff6b35, #f7931e)';
+    }
+});
+
+// Initialize animations on page load
+window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+});
