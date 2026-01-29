@@ -26,6 +26,43 @@ const supabaseUrl = CONFIG.supabaseUrl;
 const supabaseKey = CONFIG.supabaseKey;
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+// Custom Modal Logic
+const modal = document.getElementById('custom-modal');
+const modalIcon = modal.querySelector('.modal-icon i');
+const modalTitle = modal.querySelector('.modal-title');
+const modalMessage = modal.querySelector('.modal-message');
+const closeBtn = modal.querySelector('.modal-close-btn');
+
+function showModal(title, message, isSuccess = true) {
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+
+    // Update Icon
+    if (isSuccess) {
+        modalIcon.className = 'fas fa-check-circle';
+        modal.querySelector('.modal-icon').classList.remove('error');
+    } else {
+        modalIcon.className = 'fas fa-exclamation-circle';
+        modal.querySelector('.modal-icon').classList.add('error');
+    }
+
+    modal.classList.add('active');
+}
+
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+}
+
+if (modal) {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+}
+
 // Time Unknown Checkbox Logic
 const timeInput = document.getElementById('tob');
 const unknownTimeCheckbox = document.getElementById('unknown-time');
@@ -43,8 +80,7 @@ if (unknownTimeCheckbox) {
     });
 }
 
-    });
-}
+
 
 // File Upload Logic
 ['left-palm', 'right-palm'].forEach(id => {
@@ -96,11 +132,20 @@ form.addEventListener('submit', async function (e) {
 
         if (error) throw error;
 
-        alert('Thank you for your interest! We will contact you soon.');
+        showModal('Success!', 'Thank you for your interest! We will contact you soon.', true);
         form.reset();
+
+        // Reset file inputs visually
+        document.querySelectorAll('.upload-status').forEach(el => {
+            el.textContent = 'Click to Upload';
+            el.classList.remove('active');
+            el.parentElement.style.borderColor = '';
+            el.parentElement.style.backgroundColor = '';
+        });
+
     } catch (error) {
         console.error('Error submitting form:', error);
-        alert('Error: ' + error.message + '\nDetails: ' + (error.details || 'No details'));
+        showModal('Error', 'Something went wrong. Please try again later.\n' + error.message, false);
     } finally {
         submitBtn.textContent = originalBtnText;
         submitBtn.disabled = false;
