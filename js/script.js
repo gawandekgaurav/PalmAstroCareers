@@ -91,7 +91,7 @@ form.addEventListener('submit', async function (e) {
 
     try {
         const { data, error } = await supabaseClient
-            .from('consultations')
+            .from('AstroCareersDatabase')
             .insert([formData]);
 
         if (error) throw error;
