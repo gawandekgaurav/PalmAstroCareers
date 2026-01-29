@@ -110,6 +110,12 @@ const form = document.querySelector('form');
 form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
+    const nameValue = form.name.value.trim();
+    if (nameValue.length <= 2) {
+        showModal('Validation Error', 'Name must be greater than 2 characters.', false);
+        return;
+    }
+
     const submitBtn = form.querySelector('.submit-btn');
     const originalBtnText = submitBtn.textContent;
     submitBtn.textContent = 'Submitting...';
