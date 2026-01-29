@@ -132,8 +132,8 @@ function setInputError(input, message) {
 if (nameInput) {
     nameInput.addEventListener('input', function () {
         const value = this.value.trim();
-        if (value.length > 0 && value.length <= 2) {
-            setInputError(this, 'Name must be greater than 2 characters');
+        if (value.length > 0 && value.length < 2) {
+            setInputError(this, 'Name must be at least 2 characters');
         } else {
             setInputError(this, null);
         }
@@ -142,8 +142,8 @@ if (nameInput) {
     // Also validate on blur to handle empty case if needed
     nameInput.addEventListener('blur', function () {
         const value = this.value.trim();
-        if (value.length > 0 && value.length <= 2) {
-            setInputError(this, 'Name must be greater than 2 characters');
+        if (value.length > 0 && value.length < 2) {
+            setInputError(this, 'Name must be at least 2 characters');
         }
     });
 }
@@ -154,8 +154,8 @@ form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const nameValue = form.name.value.trim();
-    if (nameValue.length <= 2) {
-        setInputError(form.name, 'Name must be greater than 2 characters');
+    if (nameValue.length < 2) {
+        setInputError(form.name, 'Name must be at least 2 characters');
         // Shake animation or focus
         form.name.focus();
         return;
