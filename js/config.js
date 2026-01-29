@@ -1,4 +1,4 @@
 const CONFIG = {
-    supabaseUrl: 'https://itiakekjedmouzskuwjj.supabase.co',
-    supabaseKey: 'sb_publishable_aGJwTRVHy3UIfyf_YFTPXw_oWqkaaAe'
+    supabaseUrl: 'https://auwhdogziigvrmvtghhr.supabase.co',
+    supabaseKey: 'sb_publishable_regbSX0jGIyoCT9xyQkAgw_v-zvtqpN'
 };
