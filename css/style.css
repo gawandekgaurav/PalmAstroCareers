@@ -29,21 +29,6 @@ header {
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
-.floating-logo {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1001;
-}
-
-.floating-logo img {
-    height: 55px;
-    /* Increased size as requested */
-    width: auto;
-    display: block;
-}
-
 .header-content {
     display: flex;
     justify-content: space-between;
@@ -56,6 +41,16 @@ header {
     font-weight: 700;
     color: white;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
+    display: block;
 }
 
 .nav-menu {
@@ -793,14 +788,17 @@ footer {
         display: none !important;
     }
 
-    .floating-logo {
-        height: 40px;
-        /* Smaller on mobile */
-        left: 15px;
+    .logo {
+        font-size: 18px;
+        gap: 8px;
     }
 
-    .floating-logo img {
-        height: 100%;
+    .logo img {
+        height: 28px;
+    }
+
+    .header-content {
+        padding: 0 5px;
     }
 
     /* Shift nav toggle to right */
