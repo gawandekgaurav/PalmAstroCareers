@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete your payment for Astro Careers consultation">
+    <title>Payment - Astro Careers</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="assets/images/favicon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .payment-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .payment-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 3rem;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .payment-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .payment-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .payment-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .order-summary h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #ff6b35;
+            padding-top: 1rem;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .pay-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #ff6b35;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .payment-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .payment-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-container">
+        <div class="payment-card">
+            <div class="payment-header">
+                <div class="payment-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h1 class="payment-title">Complete Your Payment</h1>
+                <p class="payment-subtitle">Secure your astrology consultation</p>
+            </div>
+
+            <div id="error-container"></div>
+
+            <div class="order-summary">
+                <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+                <div class="summary-item">
+                    <span class="summary-label">Service:</span>
+                    <span class="summary-value" id="service-name">Loading...</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Name:</span>
+                    <span class="summary-value" id="customer-name">Loading...</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Email:</span>
+                    <span class="summary-value" id="customer-email">Loading...</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Amount:</span>
+                    <span class="summary-value">₹999</span>
+                </div>
+            </div>
+
+            <button id="pay-button" class="pay-button">
+                <i class="fas fa-lock"></i>
+                Pay Now - ₹999
+            </button>
+
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Form
+            </a>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Initialize Supabase Client
+        const supabaseUrl = CONFIG.supabaseUrl;
+        const supabaseKey = CONFIG.supabaseKey;
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Load form data from localStorage
+        let formData = null;
+
+        function showError(message) {
+            const errorContainer = document.getElementById('error-container');
+            errorContainer.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> ${message}</div>`;
+        }
+
+        function loadFormData() {
+            const savedData = localStorage.getItem('pendingFormData');
+
+            if (!savedData) {
+                showError('No form data found. Please fill out the form first.');
+                document.getElementById('pay-button').disabled = true;
+                return false;
+            }
+
+            try {
+                formData = JSON.parse(savedData);
+
+                // Display order summary
+                document.getElementById('service-name').textContent = formData.service || 'N/A';
+                document.getElementById('customer-name').textContent = formData.name || 'N/A';
+                document.getElementById('customer-email').textContent = formData.email || 'N/A';
+
+                return true;
+            } catch (error) {
+                console.error('Error parsing form data:', error);
+                showError('Invalid form data. Please try again.');
+                document.getElementById('pay-button').disabled = true;
+                return false;
+            }
+        }
+
+        // Handle payment button click
+        document.getElementById('pay-button').addEventListener('click', async function () {
+            if (!formData) {
+                showError('No form data available. Please go back and fill the form.');
+                return;
+            }
+
+            const button = this;
+            const originalContent = button.innerHTML;
+
+            // Disable button and show loading state
+            button.disabled = true;
+            button.innerHTML = '<span class="loading-spinner"></span> Processing Payment...';
+
+            try {
+                // Simulate payment processing (replace with actual Razorpay integration later)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Payment successful - now submit to database
+                const { data, error } = await supabaseClient
+                    .from('AstroCareersDatabase')
+                    .insert([formData]);
+
+                if (error) throw error;
+
+                // Clear localStorage after successful submission
+                localStorage.removeItem('pendingFormData');
+
+                // Redirect to index with success parameter
+                window.location.href = 'index.html?payment=success';
+
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                showError('Payment failed. Please try again. Error: ' + error.message);
+
+                // Re-enable button
+                button.disabled = false;
+                button.innerHTML = originalContent;
+            }
+        });
+
+        // Load form data on page load
+        window.addEventListener('load', () => {
+            loadFormData();
+        });
+    </script>
+</body>
+
+</html>

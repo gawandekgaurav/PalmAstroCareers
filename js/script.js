@@ -171,11 +171,12 @@ if (emailInput) {
     });
 }
 
-// Form submission
+// Form submission - Payment-first flow
 const form = document.querySelector('form');
 form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
+    // Validate name
     const nameValue = form.name.value.trim();
     if (nameValue.length < 2) {
         setInputError(form.name, 'Name must be at least 2 characters');
@@ -183,6 +184,7 @@ form.addEventListener('submit', async function (e) {
         return;
     }
 
+    // Validate email
     const emailValue = form.email.value.trim();
     if (!emailRegex.test(emailValue)) {
         setInputError(form.email, 'Please enter a valid email address');
@@ -190,43 +192,38 @@ form.addEventListener('submit', async function (e) {
         return;
     }
 
+    // Validate required fields
+    if (!form.dob.value || !form.tob.value || !form.pob.value || !form.service.value) {
+        showModal('Error', 'Please fill in all required fields.', false);
+        return;
+    }
+
     const submitBtn = form.querySelector('.submit-btn');
     const originalBtnText = submitBtn.textContent;
-    submitBtn.textContent = 'Submitting...';
+    submitBtn.textContent = 'Processing...';
     submitBtn.disabled = true;
 
-    const formData = {
-        name: form.name.value,
-        email: form.email.value,
-        dob: form.dob.value,
-        tob: form.tob.value,
-        pob: form.pob.value,
-        service: form.service.value,
-        message: form.message.value
-    };
-
     try {
-        const { data, error } = await supabaseClient
-            .from('AstroCareersDatabase')
-            .insert([formData]);
+        // Prepare form data
+        const formData = {
+            name: form.name.value.trim(),
+            email: form.email.value.trim(),
+            dob: form.dob.value,
+            tob: form.tob.value,
+            pob: form.pob.value.trim(),
+            service: form.service.value,
+            message: form.message.value.trim()
+        };
 
-        if (error) throw error;
+        // Store form data in localStorage (temporary storage until payment)
+        localStorage.setItem('pendingFormData', JSON.stringify(formData));
 
-        showModal('Success!', 'Thank you for your interest! We will contact you soon.', true);
-        form.reset();
-
-        // Reset file inputs visually
-        document.querySelectorAll('.upload-status').forEach(el => {
-            el.textContent = 'Click to Upload';
-            el.classList.remove('active');
-            el.parentElement.style.borderColor = '';
-            el.parentElement.style.backgroundColor = '';
-        });
+        // Redirect to payment page
+        window.location.href = 'payment.html';
 
     } catch (error) {
-        console.error('Error submitting form:', error);
-        showModal('Error', 'Something went wrong. Please try again later.\n' + error.message, false);
-    } finally {
+        console.error('Error processing form:', error);
+        showModal('Error', 'Something went wrong. Please try again.', false);
         submitBtn.textContent = originalBtnText;
         submitBtn.disabled = false;
     }
@@ -265,4 +262,19 @@ window.addEventListener('scroll', () => {
 // Initialize animations on page load
 window.addEventListener('load', () => {
     document.body.classList.add('loaded');
+
+    // Check for payment success parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment') === 'success') {
+        // Show success modal
+        showModal(
+            'Success!',
+            'Thank you for submitting your details. You will receive detailed results within 2 days.',
+            true
+        );
+
+        // Clean up URL by removing the parameter
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 });
+

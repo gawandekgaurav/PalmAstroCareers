@@ -118,10 +118,6 @@ header {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><defs><radialGradient id="stars" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.8"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><rect width="100%" height="100%" fill="%23000000"/><circle cx="100" cy="100" r="1" fill="url(%23stars)"/><circle cx="300" cy="150" r="1.5" fill="url(%23stars)"/><circle cx="500" cy="80" r="1" fill="url(%23stars)"/><circle cx="700" cy="200" r="2" fill="url(%23stars)"/><circle cx="900" cy="120" r="1" fill="url(%23stars)"/><circle cx="200" cy="300" r="1.5" fill="url(%23stars)"/><circle cx="400" cy="350" r="1" fill="url(%23stars)"/><circle cx="600" cy="280" r="2" fill="url(%23stars)"/><circle cx="800" cy="400" r="1" fill="url(%23stars)"/><circle cx="150" cy="500" r="1.5" fill="url(%23stars)"/><circle cx="350" cy="450" r="1" fill="url(%23stars)"/><circle cx="550" cy="520" r="2" fill="url(%23stars)"/><circle cx="750" cy="480" r="1" fill="url(%23stars)"/><circle cx="950" cy="550" r="1.5" fill="url(%23stars)"/></svg>');
-    background-size: cover;
-    background-position: center;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -163,14 +159,14 @@ header {
 
 /* Section Styles */
 section {
-    padding: 80px 0;
+    padding: 50px 0;
 }
 
 .section-title {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
     color: #333;
 }
 
@@ -178,7 +174,7 @@ section {
     text-align: center;
     font-size: 1.2rem;
     color: #666;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -188,7 +184,7 @@ section {
 .about-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 2.5rem;
     align-items: center;
 }
 
@@ -343,7 +339,7 @@ section {
 /* Form Section */
 .consultation-form {
     background: linear-gradient(135deg, #ff6b35, #f7931e);
-    padding: 4rem 0;
+    padding: 2.5rem 0;
     color: #333;
 }
 
@@ -634,11 +630,32 @@ select.form-input {
 .blog-image {
     height: 200px;
     background: linear-gradient(45deg, #ff6b35, #f7931e);
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px 15px 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.blog-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 0;
+}
+
+.blog-image i {
+    position: relative;
+    z-index: 1;
 }
 
 .blog-content {
@@ -669,10 +686,23 @@ select.form-input {
     color: #f7931e;
 }
 
+/* Individual Blog Card Background Images */
+.blog-img-1 {
+    background-image: url('../assets/images/blog-1.jpg');
+}
+
+.blog-img-2 {
+    background-image: url('../assets/images/blog-2.jpg');
+}
+
+.blog-img-3 {
+    background-image: url('../assets/images/blog-3.jpg');
+}
+
 /* Contact Section */
 .contact-info {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .contact-item {
@@ -1009,4 +1039,77 @@ html {
 .modal-close-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+}
+
+/* Background Image Classes with Overlay */
+.hero-bg {
+    position: relative;
+    background-image: url('../assets/images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.hero-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+}
+
+.hero-bg .container,
+.hero-bg .hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.about-bg {
+    position: relative;
+    background-image: url('../assets/images/about-bg.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.about-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    z-index: 0;
+}
+
+.about-bg i {
+    position: relative;
+    z-index: 1;
+}
+
+.consultation-bg {
+    position: relative;
+    background-image: url('../assets/images/consultation-bg.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.consultation-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.consultation-bg .container {
+    position: relative;
+    z-index: 1;
 }
