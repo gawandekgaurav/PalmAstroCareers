@@ -99,6 +99,7 @@ if (payButton) {
             const submissionData = {
                 name: formData.name,
                 email: formData.email,
+                phone: formData.phone,
                 dob: formData.dob,
                 tob: formData.tob,
                 pob: formData.pob,

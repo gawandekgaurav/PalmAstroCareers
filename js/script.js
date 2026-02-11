@@ -206,6 +206,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Real-time Phone Validation
+    const phoneInput = document.getElementById('phone');
+    const phoneRegex = /^[0-9]{10}$/;
+
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function () {
+            const value = this.value.trim();
+            if (value.length > 0 && !phoneRegex.test(value)) {
+                setInputError(this, 'Please enter a valid 10-digit phone number');
+            } else {
+                setInputError(this, null);
+            }
+        });
+
+        phoneInput.addEventListener('blur', function () {
+            const value = this.value.trim();
+            if (value.length > 0 && !phoneRegex.test(value)) {
+                setInputError(this, 'Please enter a valid 10-digit phone number');
+            }
+        });
+    }
+
     // Helper to convert file to Base64
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
@@ -226,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const elements = form.elements;
             const nameInp = elements['name'];
             const emailInp = elements['email'];
+            const phoneInp = elements['phone'];
             const dobInput = elements['dob'];
             const tobInput = elements['tob'];
             const pobInput = elements['pob'];
@@ -250,6 +273,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            // Validate phone
+            const phoneValue = phoneInp.value.trim();
+            if (!phoneRegex.test(phoneValue)) {
+                setInputError(phoneInp, 'Please enter a valid 10-digit phone number');
+                phoneInp.focus();
+                return;
+            }
+
             // Validate required fields
             if (!dobInput.value || !tobInput.value || !pobInput.value || !serviceInput.value || !leftPalmInput.files[0] || !rightPalmInput.files[0]) {
                 showModal('Error', 'Please fill in all required fields and upload palm images.', false);
@@ -270,6 +301,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const formData = {
                     name: nameValue,
                     email: emailValue,
+                    phone: phoneValue,
                     dob: dobInput.value,
                     tob: tobInput.value,
                     pob: pobInput.value.trim(),
