@@ -88,6 +88,114 @@
         </div>
     </section>
 
+
+    <!-- Consultation Form Section -->
+    <section id="consultation" class="consultation-form consultation-bg">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Book a Consultation</h2>
+            <div class="form-container">
+                <div class="form-card">
+                    <form id="consultationForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Rahul Sharma"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input"
+                                placeholder="e.g. rahul@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="e.g. 9876543210"
+                                required pattern="[0-9]{10}" title="Please enter a 10-digit phone number">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" name="dob" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tob">Time of Birth</label>
+                                <input type="time" id="tob" name="tob" class="form-input" required>
+                                <!-- <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="unknown-time">
+                                    <label for="unknown-time" class="checkbox-label">I don't know my time</label>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pob">Place of Birth</label>
+                            <input type="text" id="pob" name="pob" class="form-input" placeholder="City, State, Country"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service">Preferred Service</label>
+                            <div class="select-wrapper">
+                                <select id="service" name="service" class="form-input" required>
+                                    <option value="" disabled selected>Select a service...</option>
+                                    <option value="Personalized Career Report">Personalized Career Report</option>
+                                    <option value="1:1 Career Astrology Consultation">1:1 Career Astrology Consultation
+                                    </option>
+                                    <option value="Timing for Job Change">Timing for Job Change</option>
+                                    <option value="Business vs Job Analysis">Business vs Job Analysis</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group-section" style="margin-bottom: 1.5rem;">
+                            <label class="section-label"
+                                style="display: block; margin-bottom: 1rem; font-weight: 600; color: #333; font-size: 1.1rem;">Upload
+                                Your Palm Images</label>
+                            <div class="form-row upload-row">
+                                <!-- Left Hand -->
+                                <div class="upload-group">
+                                    <span class="upload-title">Left Palm Image</span>
+                                    <input type="file" id="leftPalm" name="left-palm" class="hidden-input"
+                                        accept="image/*" required>
+                                    <label for="leftPalm" class="upload-zone">
+                                        <div class="hand-visual left-hand-visual">
+                                            <i class="fas fa-hand-paper"></i>
+                                            <div class="scan-line"></div>
+                                        </div>
+                                        <span class="upload-status" id="leftPalm-status">Click to Upload</span>
+                                    </label>
+                                </div>
+                                <!-- Right Hand -->
+                                <div class="upload-group">
+                                    <span class="upload-title">Right Palm Image</span>
+                                    <input type="file" id="rightPalm" name="right-palm" class="hidden-input"
+                                        accept="image/*" required>
+                                    <label for="rightPalm" class="upload-zone">
+                                        <div class="hand-visual right-hand-visual">
+                                            <i class="fas fa-hand-paper"></i>
+                                            <div class="scan-line"></div>
+                                        </div>
+                                        <span class="upload-status" id="rightPalm-status">Click to Upload</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message (Optional)</label>
+                            <textarea id="message" name="message" class="form-input"
+                                placeholder="Tell us about your career goals or any specific questions you have..."></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Get Your Guidance</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- About Us Section -->
     <section id="about">
         <div class="container">
@@ -223,113 +331,6 @@
                         of my own. Astro Careers helped me see that business is my calling.</p>
                     <div class="testimonial-author">Harshit Bansal</div>
                     <div class="testimonial-location">Delhi</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Consultation Form Section -->
-    <section id="consultation" class="consultation-form consultation-bg">
-        <div class="container">
-            <h2 class="section-title" style="color: white;">Book a Consultation</h2>
-            <div class="form-container">
-                <div class="form-card">
-                    <form id="consultationForm">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Rahul Sharma"
-                                required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" class="form-input"
-                                placeholder="e.g. rahul@example.com" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="e.g. 9876543210"
-                                required pattern="[0-9]{10}" title="Please enter a 10-digit phone number">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="dob">Date of Birth</label>
-                                <input type="date" id="dob" name="dob" class="form-input" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="tob">Time of Birth</label>
-                                <input type="time" id="tob" name="tob" class="form-input" required>
-                                <!-- <div class="checkbox-wrapper">
-                                    <input type="checkbox" id="unknown-time">
-                                    <label for="unknown-time" class="checkbox-label">I don't know my time</label>
-                                </div> -->
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="pob">Place of Birth</label>
-                            <input type="text" id="pob" name="pob" class="form-input" placeholder="City, State, Country"
-                                required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="service">Preferred Service</label>
-                            <div class="select-wrapper">
-                                <select id="service" name="service" class="form-input" required>
-                                    <option value="" disabled selected>Select a service...</option>
-                                    <option value="Personalized Career Report">Personalized Career Report</option>
-                                    <option value="1:1 Career Astrology Consultation">1:1 Career Astrology Consultation
-                                    </option>
-                                    <option value="Timing for Job Change">Timing for Job Change</option>
-                                    <option value="Business vs Job Analysis">Business vs Job Analysis</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group-section" style="margin-bottom: 1.5rem;">
-                            <label class="section-label"
-                                style="display: block; margin-bottom: 1rem; font-weight: 600; color: #333; font-size: 1.1rem;">Upload
-                                Your Palm Images</label>
-                            <div class="form-row upload-row">
-                                <!-- Left Hand -->
-                                <div class="upload-group">
-                                    <span class="upload-title">Left Palm Image</span>
-                                    <input type="file" id="leftPalm" name="left-palm" class="hidden-input"
-                                        accept="image/*" required>
-                                    <label for="leftPalm" class="upload-zone">
-                                        <div class="hand-visual left-hand-visual">
-                                            <i class="fas fa-hand-paper"></i>
-                                            <div class="scan-line"></div>
-                                        </div>
-                                        <span class="upload-status" id="leftPalm-status">Click to Upload</span>
-                                    </label>
-                                </div>
-                                <!-- Right Hand -->
-                                <div class="upload-group">
-                                    <span class="upload-title">Right Palm Image</span>
-                                    <input type="file" id="rightPalm" name="right-palm" class="hidden-input"
-                                        accept="image/*" required>
-                                    <label for="rightPalm" class="upload-zone">
-                                        <div class="hand-visual right-hand-visual">
-                                            <i class="fas fa-hand-paper"></i>
-                                            <div class="scan-line"></div>
-                                        </div>
-                                        <span class="upload-status" id="rightPalm-status">Click to Upload</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="message">Message (Optional)</label>
-                            <textarea id="message" name="message" class="form-input"
-                                placeholder="Tell us about your career goals or any specific questions you have..."></textarea>
-                        </div>
-
-                        <button type="submit" class="submit-btn">Get Your Guidance</button>
-                    </form>
                 </div>
             </div>
         </div>
