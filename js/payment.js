@@ -74,6 +74,9 @@ if (payButton) {
         const button = this;
         const originalContent = button.innerHTML;
 
+        // Open Razorpay payment link in a new tab
+        window.open("https://rzp.io/l/yourpaymentlink", "_blank");
+
         // Disable button and show loading state
         button.disabled = true;
         button.innerHTML = '<span class="loading-spinner"></span> Processing Payment...';
