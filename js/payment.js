@@ -29,7 +29,6 @@ function base64ToBlob(base64) {
 }
 
 function loadFormData() {
-    const supabase = window.supabaseClient;
     const savedData = localStorage.getItem('pendingFormData');
 
     if (!savedData) {
@@ -65,7 +64,6 @@ function loadFormData() {
 const payButton = document.getElementById('pay-button');
 if (payButton) {
     payButton.addEventListener('click', async function () {
-        const supabase = window.supabaseClient;
         if (!formData) {
             showError('No form data available. Please go back and fill the form.');
             return;
@@ -98,7 +96,7 @@ if (payButton) {
 
             button.innerHTML = '<span class="loading-spinner"></span> Saving Details...';
 
-            // 3. Submit to Supabase table AstroCareersDataTable
+            // 3. Submit to Supabase Edge Function
             const submissionData = {
                 name: formData.name,
                 email: formData.email,
@@ -108,15 +106,25 @@ if (payButton) {
                 pob: formData.pob,
                 service: formData.service,
                 message: formData.message,
-                palm_left_url: leftImageUrl,
-                palm_right_url: rightImageUrl
+                leftPalmUrl: leftImageUrl,
+                rightPalmUrl: rightImageUrl
             };
 
-            const { data, error } = await supabase
-                .from('AstroCareersDataTable')
-                .insert([submissionData]);
+            const response = await fetch(EDGE_FUNCTION_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(submissionData)
+            });
 
-            if (error) throw error;
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error || `Failed to submit data: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Backend response:", data);
 
             // 4. Clear localStorage after successful submission
             localStorage.removeItem('pendingFormData');

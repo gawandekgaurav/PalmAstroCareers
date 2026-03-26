@@ -23,9 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Use Global Supabase Client
-    const supabase = window.supabaseClient;
-
     // Custom Modal Logic
     const modal = document.getElementById('custom-modal');
     let modalIcon, modalTitle, modalMessage, closeBtn;
