@@ -72,20 +72,12 @@ if (payButton) {
         const button = this;
         const originalContent = button.innerHTML;
 
-        // Open Razorpay payment link in a new tab
-        window.open("https://rzp.io/l/yourpaymentlink", "_blank");
-
         // Disable button and show loading state
         button.disabled = true;
-        button.innerHTML = '<span class="loading-spinner"></span> Processing Payment...';
+        button.innerHTML = '<span class="loading-spinner"></span> Uploading Images...';
 
         try {
-            // 1. Simulate payment processing
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            button.innerHTML = '<span class="loading-spinner"></span> Uploading Images...';
-
-            // 2. Upload images to Cloudinary
+            // 1. Upload images to Cloudinary
             const leftPalmBlob = base64ToBlob(formData.leftPalm);
             const rightPalmBlob = base64ToBlob(formData.rightPalm);
 
@@ -94,9 +86,9 @@ if (payButton) {
                 uploadToCloudinary(rightPalmBlob)
             ]);
 
-            button.innerHTML = '<span class="loading-spinner"></span> Saving Details...';
+            button.innerHTML = '<span class="loading-spinner"></span> Creating Order...';
 
-            // 3. Submit to Supabase Edge Function
+            // 2. Submit to Supabase Edge Function to Create Order
             const submissionData = {
                 name: formData.name,
                 email: formData.email,
@@ -110,7 +102,7 @@ if (payButton) {
                 rightPalmUrl: rightImageUrl
             };
 
-            const response = await fetch(EDGE_FUNCTION_URL, {
+            const response = await fetch(CREATE_ORDER_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -123,14 +115,71 @@ if (payButton) {
                 throw new Error(errData.error || `Failed to submit data: ${response.status}`);
             }
 
-            const data = await response.json();
-            console.log("Backend response:", data);
+            const { order_id, record_id } = await response.json();
 
-            // 4. Clear localStorage after successful submission
-            localStorage.removeItem('pendingFormData');
+            // 3. Open Razorpay Checkout
+            button.innerHTML = '<span class="loading-spinner"></span> Waiting for Payment...';
 
-            // 5. Redirect back to homepage with success parameter
-            window.location.href = 'index.html?payment=success';
+            var options = {
+                key: "YOUR_KEY", // Important: Set your Razorpay Key ID here
+                amount: 49900,
+                currency: "INR",
+                name: "Palm Astro",
+                description: "Palmistry Consultation",
+                order_id: order_id,
+                handler: async function (rzpResponse) {
+                    button.innerHTML = '<span class="loading-spinner"></span> Verifying Payment...';
+                    try {
+                        const verifyResponse = await fetch(VERIFY_PAYMENT_URL, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                razorpay_order_id: rzpResponse.razorpay_order_id,
+                                razorpay_payment_id: rzpResponse.razorpay_payment_id,
+                                razorpay_signature: rzpResponse.razorpay_signature,
+                                record_id: record_id
+                            })
+                        });
+
+                        if (!verifyResponse.ok) {
+                            throw new Error("Payment verification failed.");
+                        }
+
+                        // Clear localStorage and redirect back to homepage
+                        localStorage.removeItem('pendingFormData');
+                        window.location.href = 'index.html?payment=success';
+
+                    } catch (err) {
+                        showError('Verification failed: ' + err.message);
+                        button.disabled = false;
+                        button.innerHTML = originalContent;
+                    }
+                },
+                modal: {
+                    ondismiss: function() {
+                        button.disabled = false;
+                        button.innerHTML = originalContent;
+                    }
+                },
+                prefill: {
+                    name: formData.name,
+                    email: formData.email,
+                    contact: formData.phone
+                },
+                theme: {
+                    color: "#ff6b35"
+                }
+            };
+
+            var rzp = new Razorpay(options);
+            rzp.on('payment.failed', function (response){
+                showError('Payment failed: ' + response.error.description);
+                button.disabled = false;
+                button.innerHTML = originalContent;
+            });
+            rzp.open();
 
         } catch (error) {
             console.error('Error finalising submission:', error);

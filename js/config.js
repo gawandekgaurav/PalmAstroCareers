@@ -1,3 +1,3 @@
-// Edge Function URL for backend processing
-// Ensure you have deployed the 'verify-payment' Edge Function first.
-const EDGE_FUNCTION_URL = "https://auwhdogziigvrmvtghhr.supabase.co/functions/v1/verify-payment";
+// Edge Function URLs for Razorpay backend processing
+const CREATE_ORDER_URL = "https://auwhdogziigvrmvtghhr.supabase.co/functions/v1/create-order";
+const VERIFY_PAYMENT_URL = "https://auwhdogziigvrmvtghhr.supabase.co/functions/v1/verify-payment";
