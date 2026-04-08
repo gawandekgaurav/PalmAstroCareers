@@ -1,3 +1,5 @@
+const CREATE_ORDER_URL = "https://auwhdogziigvrmvtghhr.supabase.co/functions/v1/create-order";
+
 document.addEventListener("DOMContentLoaded", function () {
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
@@ -308,15 +310,36 @@ document.addEventListener("DOMContentLoaded", function () {
                     rightPalm: rightPalmBase64
                 };
 
-                // Store form data in localStorage
+                // Call backend first
+                console.log("Calling backend...");
+                const response = await fetch(CREATE_ORDER_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to call backend");
+                }
+
+                const data = await response.json();
+                console.log("Backend response:", data);
+                console.log("Response received:", data);
+
+                // Save backend response
+                localStorage.setItem('orderData', JSON.stringify(data));
+                
+                // Keep the pendingFormData for fallback or prefilling Razorpay in the next step
                 localStorage.setItem('pendingFormData', JSON.stringify(formData));
 
-                // Redirect to payment page
+                // Then redirect
                 window.location.href = 'payment.html';
 
             } catch (error) {
-                console.error('Error processing form:', error);
-                showModal('Error', 'Something went wrong. Please try again.', false);
+                console.error("Full error:", error);
+                showModal('Error', 'Backend connection failed. Please try again.', false);
                 submitBtn.textContent = originalBtnText;
                 submitBtn.disabled = false;
             }

@@ -102,20 +102,25 @@ if (payButton) {
                 rightPalmUrl: rightImageUrl
             };
 
+            console.log("Calling API...");
             const response = await fetch(CREATE_ORDER_URL, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1d2hkb2d6aWlndnJtdnRnaGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MDY0MzAsImV4cCI6MjA4NTI4MjQzMH0.LQIs45yzYGLMaYN_W7J-owGR5ZQELFuYIWN9csSPIOY"
                 },
                 body: JSON.stringify(submissionData)
             });
+            console.log("Response object:", response);
 
             if (!response.ok) {
-                const errData = await response.json().catch(() => ({}));
-                throw new Error(errData.error || `Failed to submit data: ${response.status}`);
+                throw new Error("Network response was not ok");
             }
 
-            const { order_id, record_id } = await response.json();
+            const data = await response.json();
+            console.log("Response:", data);
+
+            const { order_id, record_id } = data;
 
             // 3. Open Razorpay Checkout
             button.innerHTML = '<span class="loading-spinner"></span> Waiting for Payment...';
@@ -158,7 +163,7 @@ if (payButton) {
                     }
                 },
                 modal: {
-                    ondismiss: function() {
+                    ondismiss: function () {
                         button.disabled = false;
                         button.innerHTML = originalContent;
                     }
@@ -174,7 +179,7 @@ if (payButton) {
             };
 
             var rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (response){
+            rzp.on('payment.failed', function (response) {
                 showError('Payment failed: ' + response.error.description);
                 button.disabled = false;
                 button.innerHTML = originalContent;
