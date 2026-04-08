@@ -8,25 +8,7 @@ function showError(message) {
     }
 }
 
-// Helper to convert Base64 to Blob
-function base64ToBlob(base64) {
-    const parts = base64.split(';base64,');
-    const contentType = parts[0].split(':')[1];
-    const byteCharacters = atob(parts[1]);
-    const byteArrays = [];
 
-    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-        const slice = byteCharacters.slice(offset, offset + 512);
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        byteArrays.push(byteArray);
-    }
-
-    return new Blob(byteArrays, { type: contentType });
-}
 
 function loadFormData() {
     const savedData = localStorage.getItem('pendingFormData');
@@ -77,49 +59,12 @@ if (payButton) {
         button.innerHTML = '<span class="loading-spinner"></span> Uploading Images...';
 
         try {
-            // 1. Upload images to Cloudinary
-            const leftPalmBlob = base64ToBlob(formData.leftPalm);
-            const rightPalmBlob = base64ToBlob(formData.rightPalm);
-
-            const [leftImageUrl, rightImageUrl] = await Promise.all([
-                uploadToCloudinary(leftPalmBlob),
-                uploadToCloudinary(rightPalmBlob)
-            ]);
-
-            button.innerHTML = '<span class="loading-spinner"></span> Creating Order...';
-
-            // 2. Submit to Supabase Edge Function to Create Order
-            const submissionData = {
-                name: formData.name,
-                email: formData.email,
-                phone: formData.phone,
-                dob: formData.dob,
-                tob: formData.tob,
-                pob: formData.pob,
-                service: formData.service,
-                message: formData.message,
-                leftPalmUrl: leftImageUrl,
-                rightPalmUrl: rightImageUrl
-            };
-
-            console.log("Calling API...");
-            const response = await fetch(CREATE_ORDER_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1d2hkb2d6aWlndnJtdnRnaGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MDY0MzAsImV4cCI6MjA4NTI4MjQzMH0.LQIs45yzYGLMaYN_W7J-owGR5ZQELFuYIWN9csSPIOY"
-                },
-                body: JSON.stringify(submissionData)
-            });
-            console.log("Response object:", response);
-
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
+            const orderDataStr = localStorage.getItem('orderData');
+            if (!orderDataStr) {
+                throw new Error("Order creation failed or data missing. Please fill the form again.");
             }
-
-            const data = await response.json();
-            console.log("Response:", data);
-
+            
+            const data = JSON.parse(orderDataStr);
             const { order_id, record_id } = data;
 
             // 3. Open Razorpay Checkout

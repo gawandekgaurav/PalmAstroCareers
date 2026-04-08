@@ -227,15 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Helper to convert file to Base64
-    function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
+
 
     // Form submission - Payment-first flow
     const form = document.getElementById('consultationForm');
@@ -292,9 +284,13 @@ document.addEventListener("DOMContentLoaded", function () {
             submitBtn.disabled = true;
 
             try {
-                // Convert images to Base64 for persistent storage
-                const leftPalmBase64 = await fileToBase64(leftPalmInput.files[0]);
-                const rightPalmBase64 = await fileToBase64(rightPalmInput.files[0]);
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading Images...';
+                
+                // Upload natively to Cloudinary
+                const [leftImageUrl, rightImageUrl] = await Promise.all([
+                    uploadToCloudinary(leftPalmInput.files[0]),
+                    uploadToCloudinary(rightPalmInput.files[0])
+                ]);
 
                 // Prepare form data
                 const formData = {
@@ -306,16 +302,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     pob: pobInput.value.trim(),
                     service: serviceInput.value,
                     message: messageInput.value.trim(),
-                    leftPalm: leftPalmBase64,
-                    rightPalm: rightPalmBase64
+                    leftPalmUrl: leftImageUrl,
+                    rightPalmUrl: rightImageUrl
                 };
+                
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
 
                 // Call backend first
                 console.log("Calling backend...");
                 const response = await fetch(CREATE_ORDER_URL, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1d2hkb2d6aWlndnJtdnRnaGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MDY0MzAsImV4cCI6MjA4NTI4MjQzMH0.LQIs45yzYGLMaYN_W7J-owGR5ZQELFuYIWN9csSPIOY"
                     },
                     body: JSON.stringify(formData)
                 });
