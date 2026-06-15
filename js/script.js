@@ -1,4 +1,3 @@
-const CREATE_ORDER_URL = "https://auwhdogziigvrmvtghhr.supabase.co/functions/v1/create-order";
 
 document.addEventListener("DOMContentLoaded", function () {
     // Smooth scrolling for navigation links
@@ -91,6 +90,12 @@ document.addEventListener("DOMContentLoaded", function () {
             input.addEventListener('change', function () {
                 if (this.files && this.files[0]) {
                     const file = this.files[0];
+                    console.log(`Image selected for ${id}:`, file.name);
+                    if (id === 'leftPalm') {
+                        console.log('Left palm selected');
+                    } else if (id === 'rightPalm') {
+                        console.log('Right palm selected');
+                    }
 
                     // Validate Size (2MB)
                     if (file.size > 2 * 1024 * 1024) {
@@ -272,11 +277,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            // Validate dob
+            const dobDate = new Date(dobInput.value);
+            const maxDobDate = new Date("2022-12-31");
+            if (!dobInput.value || dobDate > maxDobDate) {
+                setInputError(dobInput, 'Please select a valid Date of Birth (must be on or before Dec 31, 2022).');
+                dobInput.focus();
+                return;
+            } else {
+                setInputError(dobInput, null);
+            }
+
             // Validate required fields
-            if (!dobInput.value || !tobInput.value || !pobInput.value || !serviceInput.value || !leftPalmInput.files[0] || !rightPalmInput.files[0]) {
+            if (!tobInput.value || !pobInput.value || !serviceInput.value || !leftPalmInput.files[0] || !rightPalmInput.files[0]) {
                 showModal('Error', 'Please fill in all required fields and upload palm images.', false);
                 return;
             }
+
+            console.log("Left palm detected:", leftPalmInput.files[0].name);
+            console.log("Right palm detected:", rightPalmInput.files[0].name);
+            console.log("Form validation passed");
+            console.log("Submitting form");
 
             const submitBtn = form.querySelector('.submit-btn');
             const originalBtnText = submitBtn.textContent;
@@ -284,6 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
             submitBtn.disabled = true;
 
             try {
+                console.log("Cloudinary upload started");
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading Images...';
                 
                 // Upload natively to Cloudinary
@@ -291,6 +313,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     uploadToCloudinary(leftPalmInput.files[0]),
                     uploadToCloudinary(rightPalmInput.files[0])
                 ]);
+
+                console.log("Cloudinary upload successful");
+                console.log("Cloudinary URL received (Left):", leftImageUrl);
+                console.log("Cloudinary URL received (Right):", rightImageUrl);
 
                 // Prepare form data
                 const formData = {
@@ -305,22 +331,29 @@ document.addEventListener("DOMContentLoaded", function () {
                     leftPalmUrl: leftImageUrl,
                     rightPalmUrl: rightImageUrl
                 };
+                console.log("Form data prepared");
                 
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
 
                 // Call backend first
                 console.log("Calling backend...");
-                const response = await fetch(CREATE_ORDER_URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1d2hkb2d6aWlndnJtdnRnaGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MDY0MzAsImV4cCI6MjA4NTI4MjQzMH0.LQIs45yzYGLMaYN_W7J-owGR5ZQELFuYIWN9csSPIOY"
-                    },
-                    body: JSON.stringify(formData)
-                });
+                let response;
+                try {
+                    response = await fetch(CREATE_ORDER_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1d2hkb2d6aWlndnJtdnRnaGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MDY0MzAsImV4cCI6MjA4NTI4MjQzMH0.LQIs45yzYGLMaYN_W7J-owGR5ZQELFuYIWN9csSPIOY"
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                } catch (fetchErr) {
+                    throw new Error("Supabase Fetch Failed: " + fetchErr.message);
+                }
 
                 if (!response.ok) {
-                    throw new Error("Failed to call backend");
+                    const errText = await response.text();
+                    throw new Error(`Backend error (${response.status}): ${errText}`);
                 }
 
                 const data = await response.json();
@@ -333,12 +366,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Keep the pendingFormData for fallback or prefilling Razorpay in the next step
                 localStorage.setItem('pendingFormData', JSON.stringify(formData));
 
+                console.log("Redirecting to payment");
                 // Then redirect
                 window.location.href = 'payment.html';
 
             } catch (error) {
                 console.error("Full error:", error);
-                showModal('Error', 'Backend connection failed. Please try again.', false);
+                showModal('Error', 'Connection failed: ' + error.message, false);
                 submitBtn.textContent = originalBtnText;
                 submitBtn.disabled = false;
             }
